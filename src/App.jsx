@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import './App.css'
+import './styles/App.css'
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
-import CsvParser from './CsvParser'
+import CsvParser from './components/CsvParser'
+
 import Papa from "papaparse";
 
 function App() {
