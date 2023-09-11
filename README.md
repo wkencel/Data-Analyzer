@@ -1,7 +1,7 @@
 
 # Data Analyzer - Powered by Chat-gpt
 #
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/chatgpt-Data-Analyzer)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/wkencel/ChatGPT.DataAnalyzer)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 This Data Analyzer is an open-source online resource that helps individuals analyze their data through the LLM Chat-gpt so that they can get data driven insights to help inform them of what business actions to take. Feel free to send me any pull requests to contribute to it's functionality.
