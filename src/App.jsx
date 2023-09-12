@@ -7,6 +7,7 @@ import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import particlesOptions from "../particles.json";
 import Papa from "papaparse";
+import axios from "axios";
 
 function App() {
   const particlesInit = useCallback((main) => {
@@ -111,6 +112,20 @@ function App() {
         setCsvData(results.data);
       },
     });
+
+    // Send the CSV to the endpoint /upload using axios
+    const formData = new FormData();
+    formData.append("file", file);
+    const url = "http://localhost:8000/upload";
+
+    axios
+      .post(url, formData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   
   return (
