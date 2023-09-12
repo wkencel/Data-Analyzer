@@ -26,17 +26,17 @@ function App() {
     //  Explain things like you're talking to a data analyst with 10 years experience and include the data
     role: "system",
     content: `Explain things like you're a data analyst with 10 years experience and we are looking at this data ${JSON.stringify(
-      csvData
-      )}`,
-    };
+    csvData
+    )}`,
+  };
     
-    // Handle the error if no API Key
-    if (!import.meta.env.VITE_OPENAI_API_KEY) {
-      console.error("ERROR: API_KEY environment variable is not set.");
-    }
+  // Handle the error if no API Key
+  if (!import.meta.env.VITE_OPENAI_API_KEY) {
+    console.error("ERROR: API_KEY environment variable is not set.");
+  }
     
-    const handleSend = async (message) => {
-      const newMessage = {
+  const handleSend = async (message) => {
+    const newMessage = {
         message,
       direction: 'outgoing',
       sender: "user"
@@ -106,28 +106,32 @@ function App() {
   
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    Papa.parse(file, {
-      header: true,
-      complete: (results) => {
-        setCsvData(results.data);
-      },
-    });
-
-    // Send the CSV to the endpoint /upload using axios
+    console.log('console.log hit #2')
+    
     const formData = new FormData();
     formData.append("file", file);
     const url = "http://localhost:8000/upload";
 
     axios
-      .post(url, formData)
-      .then((response) => {
-        console.log(response);
+    .post(url, formData)
+    .then((response) => {
+      console.log(
+        `this is the response from axios: ${JSON.stringify(response.data)}`
+        );
       })
       .catch((error) => {
         console.error(error);
       });
+
+    Papa.parse(file, {
+      header: true,
+      complete: (results) => {
+        setCsvData(results.data);
+        console.log( `papaParse hit #1 \n results.data: ${results.data}`)
+      },
+    });
   };
-  
+      
   return (
     <div className="App">
       <Particles options={particlesOptions} init={particlesInit} />;
@@ -150,7 +154,7 @@ function App() {
                 }
               >
                 {messages.map((message, i) => {
-                  console.log(`chatgpt message ${message}`);
+                  console.log(`chatgpt message ${JSON.stringify(message)}`);
                   return <Message key={i} model={message} />;
                 })}
               </MessageList>

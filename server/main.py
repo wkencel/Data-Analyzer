@@ -15,9 +15,7 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Content-Type", "Authorization"],
-#   if you'd like to allow all headers
-#   allow_headers=["*"],
+    allow_headers=["*"],
 )
 
 @app.get("/")
@@ -26,10 +24,9 @@ async def root():
 
 @app.post("/upload")
 async def upload(file: UploadFile = File(...)):
-    contents = await file.read()
-    print(file.filename)
-    # Process the file contents here
-    return {"filename": file.filename}
+    print('at the backend python script')
+    print(f"Received file: {file.filename}")
+    return {file}
 
 result = upload()
 print(result)
