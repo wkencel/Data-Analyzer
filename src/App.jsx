@@ -25,9 +25,7 @@ function App() {
   const systemMessage = {
     //  Explain things like you're talking to a data analyst with 10 years experience and include the data
     role: "system",
-    content: `Explain things like you're a data analyst with 10 years experience and we are looking at this data ${JSON.stringify(
-    csvData
-    )}`,
+    content: `Explain things like you're a data analyst with 10 years experience and we are looking at this data ${JSON.stringify(csvData)}`,
   };
     
   // Handle the error if no API Key
