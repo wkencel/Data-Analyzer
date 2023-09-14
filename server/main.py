@@ -30,12 +30,14 @@ async def root():
 async def upload(
     file: UploadFile = File(...),
     columnHeader: str = Form(...),
-    plotType: str = Form(...)
+    plotType: str = Form(...),
+    # category: str = Form(...)
 ):
     # print(f"Received file: {file.filename}")
     print('at the backend python script')
     print(f"Option 1 value: {columnHeader}")
     print(f"Option 2 value: {plotType}")
+    # print(f"Option 3 value: {category}")
     # # Step 1: Specify the destination file path on the Python server
     destination_directory = os.getcwd()  # Get the current working directory
     destination_directory = os.path.join(destination_directory, 'csvs')
@@ -76,6 +78,14 @@ async def upload(
     # plt.ylabel('House Condition')
     # plt.xlabel('Selling Price (thousands of dollars)')
     # plt.title('Box Plot of Selling Prices of houses in Gaineville, Florida')
+
+    #  another boxplot
+    # race_order = ['B', 'H', 'W']
+    # fig, ax = plt.subplots()
+    # ax.boxplot([data[data['race'] == race]['income'] for race in race_order], labels=race_order, vert=False)
+    # ax.set_xlabel('Income (in thousands of dollars)')
+    # ax.set_ylabel('Race')
+    # ax.set_title('Income by Race')
 
     # this currently only works for housePrices, histogram
     choosePlot(plotType, columnHeader, data1)

@@ -1,28 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { globalContext } from "../context/dataContext";
 import axios from "axios";
 
-const ChartOptionDropdown = ({ options1, options2 }) => {
-    // const [selectedOption1, setSelectedOption1] = useState("");
-    // const [selectedOption2, setSelectedOption2] = useState("");
+const ChartOptionDropdown = ({ options1, options2, options3 }) => {
     const { 
         columnOption, 
-        setColumnOption,
         plotType,
-        setPlotType,
         fileData,
-        setFileData
+        category,
+        setColumnOption,
+        setPlotType,
+        setFileData,
+        setCategory
     } = React.useContext(globalContext);   
     console.log(`options from globalContext: ${columnOption}, `)
 
     const handleColumnChange = (e) => {
-        // setSelectedOption1(e.target.value);
         setColumnOption(e.target.value)
     };
 
     const handlePlotTypeChange = (e) => {
-        // setSelectedOption2(e.target.value);
         setPlotType(e.target.value);
+    };
+    
+    const handleCategoryChange = (e) => {
+        setCategory(e.target.value);
     };
 
     const handleSubmit = (e) => {
@@ -39,6 +41,7 @@ const ChartOptionDropdown = ({ options1, options2 }) => {
         formData.append("file", fileData);
         formData.append("columnHeader", columnOption);
         formData.append("plotType", plotType);
+        // formData.append("category", category);
         const url = "http://localhost:8000/upload";
 
         axios
@@ -53,44 +56,72 @@ const ChartOptionDropdown = ({ options1, options2 }) => {
             });
     };
 
+    const Category = () => {
+        return (
+            <div style={{ display: "flex", flexDirection: "row" }}>
+                <p> by </p>
+                <select
+                id="columnHeader"
+                value={category}
+                onChange={handleCategoryChange}
+                style={{ margin: "10px" }}
+                >
+                <option value="">Select a category</option>
+                {options3.map((option, index) => (
+                    <option key={index} value={option}>
+                    {option}
+                    </option>
+                ))}
+                </select>
+            </div>
+        );
+    }
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
-            <label htmlFor="columnHeader">Column:</label>
-            <select
-                id="columnHeader"
-                value={columnOption}
-                onChange={handleColumnChange}
-            >
-                <option value="">Select an option</option>
-                {options1.map((option, index) => (
-                <option key={index} value={option}>
-                    {option}
-                </option>
-                ))}
-            </select>
+                <label htmlFor="columnHeader">Column:</label>
+                <select
+                    id="columnHeader"
+                    value={columnOption}
+                    onChange={handleColumnChange}
+                    style={{ margin: "10px" }}
+                >
+                    <option value="">Select an option</option>
+                    {options1.map((option, index) => (
+                    <option key={index} value={option}>
+                        {option}
+                    </option>
+                    ))}
+                </select>
 
-            <br />
+                <br />
 
-            <label htmlFor="plotType">Plot Type:</label>
-            <select
-                id="plotType"
-                value={plotType}
-                onChange={handlePlotTypeChange}
-            >
-                <option value="">Select a plot Type</option>
-                {options2.map((option, index) => (
-                <option key={index} value={option}>
-                    {option}
-                </option>
-                ))}
-            </select>
-
-            <br />
-            <button onClick={generateChart}>Generate Chart</button>
+                <label htmlFor="plotType">Plot Type:</label>
+                <select
+                    id="plotType"
+                    value={plotType}
+                    onChange={handlePlotTypeChange}
+                >
+                    <option value="">Select a plot Type</option>
+                    {options2.map((option, index) => (
+                    <option key={index} value={option}>
+                        {option}
+                    </option>
+                    ))}
+                </select>
+                {plotType === "box plot" ? <Category /> : null}
+                <br />
+                <button
+                style={{ border: "1px solid white", margin: "10px" }}
+                onClick={generateChart}
+                >
+                Generate Chart
+                </button>
             </form>
         </div>
     );
 };
-
+        
+        // {plotType === "box plot" ? <Category /> : null}
 export default ChartOptionDropdown;

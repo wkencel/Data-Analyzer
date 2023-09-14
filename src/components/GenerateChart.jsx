@@ -2,24 +2,21 @@ import axios from "axios";
 
 const GenerateChart = (csv) => {
 
-    console.log(`csv: ${csv}`)
-    //create a handleClick function that will be called when the button is clicked
     const handleClick = () => {
-        // console.log(`button generate chart has been clicked ${JSON.stringify(csv)}`)
-            const formData = new FormData();
-            formData.append("file", csv);
-            const url = "http://localhost:8000/upload";
+        const formData = new FormData();
+        formData.append("file", csv);
+        const url = "http://localhost:8000/upload";
 
-            axios
-                .post(url, formData)
-                .then((response) => {
-                        console.log(
-                        `this is the response from axios:}`
-                    );
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+        axios
+            .post(url, formData)
+            .then((response) => {
+                    console.log(
+                    `this is the response from axios: ${response}}`
+                );
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     return (
