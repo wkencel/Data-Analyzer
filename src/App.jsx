@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
 import './styles/App.css'
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
@@ -8,20 +8,32 @@ import { loadFull } from "tsparticles";
 import particlesOptions from "../particles.json";
 import Papa from "papaparse";
 import axios from "axios";
+import ChartOptionDropdown from "./components/chartOptionDropdown.jsx";
+import { globalContext } from "./context/dataContext";
 
 function App() {
-  const particlesInit = useCallback((main) => {
-    loadFull(main);
-  }, []);
+  const [isTyping, setIsTyping] = useState(false);
+  const [csvData, setCsvData] = useState([]);
+  const [columnHeaders, setColumnHeaders] = useState([]); // ["column1", "column2", "column3"
   const [messages, setMessages] = useState([
     {
-      message: "Hello, I'm ChatGPT! Ask me anything!",
+      message: "Hello, I'm your Data Assistant! upload your csv and start asking for insights!",
       sentTime: "just now",
       sender: "ChatGPT"
     }
   ]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [csvData, setCsvData] = useState([]);
+  const {
+    columnOption,
+    plotType,
+    fileData,
+    setColumnOption,
+    setPlotType,
+    setFileData
+  } = useContext(globalContext);  
+
+  const particlesInit = useCallback((main) => {
+    loadFull(main);
+  }, []);
   const systemMessage = {
     //  Explain things like you're talking to a data analyst with 10 years experience and include the data
     role: "system",
@@ -104,27 +116,28 @@ function App() {
   
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    console.log('console.log hit #2')
-    
-    const formData = new FormData();
-    formData.append("file", file);
-    const url = "http://localhost:8000/upload";
+    setFileData(file)
 
-    axios
-    .post(url, formData)
-    .then((response) => {
-      console.log(
-        `this is the response from axios: ${JSON.stringify(response.data)}`
-        );
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
+    function parseHeaders(data) {
+      var headers = [];
+      for (var i = 0; i < data.length; i++) {
+        var row = data[i];
+        for (var key in row) {
+          if (headers.indexOf(key) === -1) {
+            headers.push(key);
+          }
+        }
+      }
+      return headers;
+    }
+    // Parse the input file to show to the client
     Papa.parse(file, {
       header: true,
       complete: (results) => {
         setCsvData(results.data);
+        setColumnHeaders(parseHeaders(results.data));
+        console.log(`with json stringify on the papaparse data : ${JSON.stringify(results.data)}`)
+        console.log(`here are the headers on the papaparse data : ${columnHeaders}`);
         console.log( `papaParse hit #1 \n results.data: ${results.data}`)
       },
     });
@@ -140,7 +153,13 @@ function App() {
           onChange={handleFileUpload}
           style={{ position: "relative", zIndex: 2 }}
         />
-        <div style={{ backgroundColor: "black", position: "relative", zIndex: 2 }} >
+        <div
+          style={{ backgroundColor: "black", position: "relative", zIndex: 2 }}
+        >
+          <ChartOptionDropdown
+            options1={columnHeaders}
+            options2={["box plot", "histogram", "line plot", "scatter plot"]}
+          />
           <MainContainer>
             <ChatContainer>
               <MessageList
