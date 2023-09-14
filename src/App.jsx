@@ -160,7 +160,7 @@ function App() {
             options1={columnHeaders}
             options2={["box plot", "histogram", "line plot", "scatter plot"]}
           />
-          <MainContainer>
+          <MainContainer style={{ height: "600px" }}>
             <ChatContainer>
               <MessageList
                 scrollBehavior="smooth"
