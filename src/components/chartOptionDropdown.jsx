@@ -41,7 +41,7 @@ const ChartOptionDropdown = ({ options1, options2, options3 }) => {
         formData.append("file", fileData);
         formData.append("columnHeader", columnOption);
         formData.append("plotType", plotType);
-        // formData.append("category", category);
+        formData.append("category", category);
         const url = "http://localhost:8000/upload";
 
         axios
@@ -123,5 +123,4 @@ const ChartOptionDropdown = ({ options1, options2, options3 }) => {
     );
 };
         
-        // {plotType === "box plot" ? <Category /> : null}
 export default ChartOptionDropdown;

@@ -31,7 +31,7 @@ async def upload(
     file: UploadFile = File(...),
     columnHeader: str = Form(...),
     plotType: str = Form(...),
-    # category: str = Form(...)
+    category: str = Form(...)
 ):
     # print(f"Received file: {file.filename}")
     print('at the backend python script')
@@ -49,58 +49,64 @@ async def upload(
         shutil.copyfileobj(file.file, buffer)
 
     # # Step 2: Load CSV file into a DataFrame
-    data1 = pd.read_csv(destination_file_path, sep=',')
+    csv = pd.read_csv(destination_file_path, sep=',')
 
+    def get_categories(arr):
+        arr_types = []
+        for element in arr:
+            if element not in arr_types:
+                arr_types.append(element)
+        return arr_types
+
+    input_arr = csv[category]
+    output_arr = get_categories(input_arr)
+
+    print(output_arr)
     # function to choose proper plot library
     def choosePlot(plotType, column, data):
         if plotType == 'line':
-            return data1.plot()
+            return csv.plot()
     #     elif plotType == 'bar':
-    #         return data1.plot.bar()
+    #         return csv.plot.bar()
         elif plotType == 'histogram':
                 plt.hist(data[column], bins=10)
                 plt.title(file.filename)
                 plt.xlabel(columnHeader)
                 plt.ylabel("Frequency")
-                return
-    #     elif plotType == 'box':
-    #         return data1.plot.box()
+        elif plotType == 'box plot':
+            categories = get_categories(csv[category])
+            fig, ax = plt.subplots()
+            ax.boxplot([data[data[category] == match][columnHeader] for match in categories], labels=categories, vert=False)
+            ax.set_xlabel(columnHeader)
+            ax.set_ylabel(category)
+            ax.set_title(f"{columnHeader} by {category}")
+
+            plt.show()
+    #         return csv.plot.box()
     #     elif plotType == 'scatter':
-    #         return data1.plot.scatter()
+    #         return csv.plot.scatter()
     #     elif plotType == 'pie':
-    #         return data1.plot.pie()
+    #         return csv.plot.pie()
         else:
             return
 
-    # this is a hardcoded box plot for the housePrices
-    # plt.boxplot([data1[data1['new'] == 1]['price'], data1[data1['new'] == 0]['price']], vert=False)
-    # plt.yticks([1, 2], ['New', 'Old'])
-    # plt.ylabel('House Condition')
-    # plt.xlabel('Selling Price (thousands of dollars)')
-    # plt.title('Box Plot of Selling Prices of houses in Gaineville, Florida')
-
-    #  another boxplot
-    # race_order = ['B', 'H', 'W']
-    # fig, ax = plt.subplots()
-    # ax.boxplot([data[data['race'] == race]['income'] for race in race_order], labels=race_order, vert=False)
-    # ax.set_xlabel('Income (in thousands of dollars)')
-    # ax.set_ylabel('Race')
-    # ax.set_title('Income by Race')
-
     # this currently only works for housePrices, histogram
-    choosePlot(plotType, columnHeader, data1)
-    # plt.hist(data1['price'], bins=10)
+    choosePlot(plotType, columnHeader, csv)
+    # plt.hist(csv['price'], bins=10)
 
+    print(f"data column category {csv[category]}")
+    print(f"test: {get_categories(csv[category])}")
     plt.show()
-
+    print('34')
 
     # # # Starter code for analyzing .dat files
     # # url = "http://stat4ds.rwth-aachen.de/data/Carbon_West.dat"
     # # Split the values in the input file based on whitespace to properly load the DataFrame
     # # data = pd.read_csv(url, sep=r'\s+', engine='python')
 
-    # print(f"the file itself: {data1}")
-    return {'message': f'This is the file from the backend Python server: {data1}'}
+    # print(f"the file itself: {csv}")
+    print('43')
+    return {'message': f'This is the file from the backend Python server: {csv}'}
 
 result = upload()
 print(result)
