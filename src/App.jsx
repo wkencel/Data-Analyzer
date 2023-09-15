@@ -9,6 +9,7 @@ import Papa from "papaparse";
 import ChartOptionDropdown from "./components/chartOptionDropdown.jsx";
 import { globalContext } from "./context/dataContext";
 import ChatGptMessageBox from "./components/ChatGptMessageBox";
+import { plotOptions } from "./Constants/ClientConstants";
 
 function App() {
   const [columnHeaders, setColumnHeaders] = useState([]); // ["column1", "column2", "column3"
@@ -44,9 +45,6 @@ function App() {
       complete: (results) => {
         setCsvData(results.data);
         setColumnHeaders(parseHeaders(results.data));
-        console.log(`with json stringify on the papaparse data : ${JSON.stringify(results.data)}`)
-        console.log(`here are the headers on the papaparse data : ${columnHeaders}`);
-        console.log( `papaParse hit #1 \n results.data: ${results.data}`)
       },
     });
   };
@@ -66,7 +64,7 @@ function App() {
         >
           <ChartOptionDropdown
             options1={columnHeaders}
-            options2={["box plot", "histogram", "line plot", "scatter plot"]}
+            options2={plotOptions}
             options3={columnHeaders}
           />
           <ChatGptMessageBox />
