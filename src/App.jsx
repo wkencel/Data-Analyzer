@@ -6,7 +6,7 @@ import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import particlesOptions from "../particles.json";
 import Papa from "papaparse";
-import ChartOptionDropdown from "./components/chartOptionDropdown.jsx";
+import ChartOptionDropdown from "./components/ChartOptionDropdown.jsx";
 import { globalContext } from "./context/dataContext";
 import ChatGptMessageBox from "./components/ChatGptMessageBox";
 import { plotOptions } from "./Constants/ClientConstants";

@@ -10,7 +10,6 @@ const ChartOptionDropdown = ({ options1, options2, options3 }) => {
         category,
         setColumnOption,
         setPlotType,
-        setFileData,
         setCategory
     } = React.useContext(globalContext);   
     console.log(`options from globalContext: ${columnOption}, `)
@@ -116,7 +115,7 @@ const ChartOptionDropdown = ({ options1, options2, options3 }) => {
                 style={{ border: "1px solid white", margin: "10px" }}
                 onClick={generateChart}
                 >
-                Generate Chart
+                    Generate Chart
                 </button>
             </form>
         </div>

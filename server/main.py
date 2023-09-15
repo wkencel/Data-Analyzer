@@ -31,13 +31,15 @@ async def upload(
     file: UploadFile = File(...),
     columnHeader: str = Form(...),
     plotType: str = Form(...),
-    category: str = Form(...)
+    category: str = Form(None)
 ):
-    # print(f"Received file: {file.filename}")
-    print('at the backend python script')
-    print(f"Option 1 value: {columnHeader}")
-    print(f"Option 2 value: {plotType}")
-    # print(f"Option 3 value: {category}")
+    # print statement for checking variables from the post request
+        # print(f"Received file: {file.filename}")
+        # print('at the backend python script')
+        # print(f"Option 1 value: {columnHeader}")
+        # print(f"Option 2 value: {plotType}")
+        # print(f"Option 3 value: {category}")
+
     # # Step 1: Specify the destination file path on the Python server
     destination_directory = os.getcwd()  # Get the current working directory
     destination_directory = os.path.join(destination_directory, 'csvs')
@@ -48,7 +50,7 @@ async def upload(
     with open(destination_file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # # Step 2: Load CSV file into a DataFrame
+    # # Step 3: Load CSV file into a DataFrame
     csv = pd.read_csv(destination_file_path, sep=',')
 
     def get_categories(arr):
@@ -65,33 +67,26 @@ async def upload(
     #     elif plotType == 'bar':
     #         return csv.plot.bar()
         elif plotType == 'histogram':
-                plt.hist(data[column], bins=10)
-                plt.title(file.filename)
-                plt.xlabel(columnHeader)
-                plt.ylabel("Frequency")
+            plt.hist(data[column], bins=10)
+            plt.title(file.filename)
+            plt.xlabel(columnHeader)
+            plt.ylabel("Frequency")
         elif plotType == 'box plot':
             categories = get_categories(csv[category])
-            if not (1 <= len(data[category]) <= 10):
-                raise ValueError("Amount of categories should be between 1 and 10. Error is most likely 'categories is either: not an array, an empty array or an array with a length greater than 10")
+            # if not (1 <= len(data[category]) <= 10):
+            #     raise ValueError("Amount of categories should be between 1 and 10. Error is most likely 'categories is either: not an array, an empty array or an array with a length greater than 10")
             fig, ax = plt.subplots()
             ax.boxplot([data[data[category] == match][columnHeader] for match in categories], labels=categories, vert=False)
             ax.set_xlabel(columnHeader)
             ax.set_ylabel(category)
             ax.set_title(f"{columnHeader} by {category}")
-
-            plt.show()
     #         return csv.plot.box()
     #     elif plotType == 'scatter':
     #         return csv.plot.scatter()
     #     elif plotType == 'pie':
     #         return csv.plot.pie()
-        else:
-            return
 
     choosePlot(plotType, columnHeader, csv)
-
-    print(f"data column category {csv[category]}")
-    print(f"test: {get_categories(csv[category])}")
     plt.show()
 
     # # # Starter code for analyzing .dat files
