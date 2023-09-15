@@ -58,10 +58,6 @@ async def upload(
                 arr_types.append(element)
         return arr_types
 
-    input_arr = csv[category]
-    output_arr = get_categories(input_arr)
-
-    print(output_arr)
     # function to choose proper plot library
     def choosePlot(plotType, column, data):
         if plotType == 'line':
@@ -90,22 +86,17 @@ async def upload(
         else:
             return
 
-    # this currently only works for housePrices, histogram
     choosePlot(plotType, columnHeader, csv)
-    # plt.hist(csv['price'], bins=10)
 
     print(f"data column category {csv[category]}")
     print(f"test: {get_categories(csv[category])}")
     plt.show()
-    print('34')
 
     # # # Starter code for analyzing .dat files
     # # url = "http://stat4ds.rwth-aachen.de/data/Carbon_West.dat"
     # # Split the values in the input file based on whitespace to properly load the DataFrame
     # # data = pd.read_csv(url, sep=r'\s+', engine='python')
 
-    # print(f"the file itself: {csv}")
-    print('43')
     return {'message': f'This is the file from the backend Python server: {csv}'}
 
 result = upload()
