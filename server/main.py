@@ -71,6 +71,8 @@ async def upload(
                 plt.ylabel("Frequency")
         elif plotType == 'box plot':
             categories = get_categories(csv[category])
+            if not (1 <= len(data[category]) <= 10):
+                raise ValueError("Amount of categories should be between 1 and 10. Error is most likely 'categories is either: not an array, an empty array or an array with a length greater than 10")
             fig, ax = plt.subplots()
             ax.boxplot([data[data[category] == match][columnHeader] for match in categories], labels=categories, vert=False)
             ax.set_xlabel(columnHeader)
