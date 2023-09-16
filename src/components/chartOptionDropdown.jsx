@@ -28,15 +28,15 @@ const ChartOptionDropdown = ({ options1, options2, options3 }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Do something with the selected options
-        // console.log("Selected Option 1:", selectedOption1);
-        console.log("Selected Option 1 in context:", columnOption);
-        // console.log("Selected Option 2:", selectedOption2);
-        console.log("Selected Option 1 in context:", plotType);
+        console.log(`Selected columnOption submitted: ${columnOption}`);
+        console.log(`Selected plotType submitted: ${plotType}`);
     };
 
+    // append information to formData and send to backend
     const generateChart = () => {
         const formData = new FormData();
+        // error handling
+        if (columnOption === category) console.error("columnOption and category cannot be the same");
         formData.append("file", fileData);
         formData.append("columnHeader", columnOption);
         formData.append("plotType", plotType);
