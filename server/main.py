@@ -73,7 +73,7 @@ async def upload(
             plt.ylabel("Frequency")
         elif plotType == 'box plot':
             categories = get_categories(csv[category])
-            ax = plt.subplots()
+            fig, ax = plt.subplots()
             ax.boxplot([data[data[category] == match][columnHeader] for match in categories], labels=categories, vert=False)
             ax.set_xlabel(columnHeader)
             ax.set_ylabel(category)

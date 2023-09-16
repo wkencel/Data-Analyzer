@@ -36,7 +36,7 @@ const ChartOptionDropdown = ({ options1, options2, options3 }) => {
     const generateChart = () => {
         const formData = new FormData();
         // error handling
-        if (columnOption === category) console.error("columnOption and category cannot be the same");
+        // if (columnOption === category) console.error("columnOption and category cannot be the same");
         formData.append("file", fileData);
         formData.append("columnHeader", columnOption);
         formData.append("plotType", plotType);
