@@ -30,11 +30,14 @@ After a brief set up, Data Analyzer will allow you to host a powerful data analy
 
    ``` VITE_OPENAI_API_KEY= Your API_KEY here``` 
 
-4. run ```npm run dev```
+4. run ```npm run dev``` to start clientside
+
+5. navigate to ```./server/```
+
+6. run ```uvicorn main:app --reload``` to start server
 
 ## Technologies
-This app runs on [Chat-GPT](https://openai.com/chatgpt) and is built in the [React](https://react.dev/) Framework with Hooks. It uses the [tsparticles](https://github.com/tsparticles/react) library for the interactive background. It also uses [Vite](https://vitejs.dev/) for it's local development server. A library called [papaparse](https://github.com/mholt/PapaParse) is used for parsing the csv files.
-
+This app runs on [Chat-GPT](https://openai.com/chatgpt) and is built in the [React](https://react.dev/) Framework with Hooks. It uses the [tsparticles](https://github.com/tsparticles/react) library for the interactive background. It also uses [Vite](https://vitejs.dev/) for it's local development server. A library called [papaparse](https://github.com/mholt/PapaParse) is used for parsing the csv files. For generating the charts, it has a backend server in Python that uses [matplotlib](https://matplotlib.org/) to create the charts.
 
 
 ## My SWE pillars
